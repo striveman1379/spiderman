@@ -1,5 +1,5 @@
 import six
-
+import redis
 from scrapy.utils.misc import load_object
 
 from . import defaults
@@ -46,7 +46,7 @@ def get_redis_from_settings(settings):
 
     """
     params = defaults.REDIS_PARAMS.copy()
-    params.update(settings.getdict('REDIS_PARAMS'))
+    params.update(settings.get('PARAMS'))
     # XXX: Deprecate REDIS_* settings.
     for source, dest in SETTINGS_PARAMS_MAP.items():
         val = settings.get(source)
@@ -82,7 +82,7 @@ def get_redis(**kwargs):
         Redis client instance.
 
     """
-    redis_cls = kwargs.pop('redis_cls', defaults.REDIS_CLS)
+    redis_cls = redis.StrictRedis
     url = kwargs.pop('url', None)
     if url:
         return redis_cls.from_url(url, **kwargs)
