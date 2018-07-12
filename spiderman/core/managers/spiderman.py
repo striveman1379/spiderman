@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from scrapy.utils.misc import load_object
 from .backends import BackendManager
 
 
@@ -8,28 +9,29 @@ class SpidermanManager(object):
         self._settings = settings
 
         # init backend manager
-        self._backend_manager = BackendManager(settings.get('BACKENDS'))
+        self._requester_manager = BackendManager(settings.get('BACKENDS'))
 
-        # get backend
-        self._backend = self._backend_manager.get_backend(settings.get('SPIDER_MANAGER_BACKEND'))
+        # get requester
+        requester_setting = settings.get('REQUESTER')
+        self._requester = load_object(requester_setting.get('MODULE'))(requester_setting, self._requester_manager)
 
     @property
     def settings(self): return self._settings
 
     @property
-    def backend_manager(self): return self._backend_manager
+    def backend_manager(self): return self._requester_manager
 
     def start(self, spider):
-        self._backend.start(spider)
+        self._requester.start(spider)
 
     def stop(self, reason):
-        self._backend.stop(reason)
+        self._requester.stop(reason)
 
     def add_requests(self, requests):
-        return self._backend.add_requests(requests)
+        return self._requester.add_requests(requests)
 
     def get_requests(self, max_requests=0, **kwargs):
-        return self._backend.get_requests(max_requests, **kwargs)
+        return self._requester.get_requests(max_requests, **kwargs)
 
     def page_crawled(self, response):
         pass
