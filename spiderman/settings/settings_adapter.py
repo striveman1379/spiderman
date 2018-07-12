@@ -10,7 +10,6 @@ class SettingsAdapter(object):
         self._settings = settings
 
     def get(self, key, default_value=None):
-        found = False
         for settings in self._settings:
             v = settings.get(key)
             if v is not None: return v

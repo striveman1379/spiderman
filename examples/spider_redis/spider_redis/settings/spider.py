@@ -1,19 +1,24 @@
+# -*- coding: utf-8 -*-
+
+# Scrapy settings for spider_redis project
+#
+# For simplicity, this file contains only settings considered important or
+# commonly used. You can find more settings consulting the documentation:
+#
+#     https://doc.scrapy.org/en/latest/topics/settings.html
+#     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
+#     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
+
+BOT_NAME = 'spider_redis'
+
+SPIDER_MODULES = ['spider_redis.spiders']
+NEWSPIDER_MODULE = 'spider_redis.spiders'
 
 
-BACKENDS = {
-    'MODULE': 'spiderman.contrib.backends.RedisBackend',
-    'URL': None,
-    'HOST': 'localhost',
-    'PORT': 6379,
-    'ENCODING': 'utf-8',
-    'QUEUE_KEY': '%(spider)s:requests',
-    'QUEUE_CLASS': 'spiderman.contrib.backends.redis.queue.FifoQueue',
-    'REQUEST_TIMEOUT': 3,
+SCHEDULER = 'spiderman.contrib.schedulers.SpidermanScheduler'
 
-    # Sane connection defaults.
-    'PARAMS': {
-        'socket_timeout': 30,
-        'socket_connect_timeout': 30,
-        'retry_on_timeout': True,
-    }
-}
+
+
+from .backends import *
+
+SPIDER_MANAGER_BACKEND = 'redis'

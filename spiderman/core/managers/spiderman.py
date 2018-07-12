@@ -1,6 +1,5 @@
 from __future__ import absolute_import
-from spiderman.contrib.backends import create_backend
-
+from .backends import BackendManager
 
 
 
@@ -8,11 +7,17 @@ class SpidermanManager(object):
     def __init__(self, settings):
         self._settings = settings
 
-        # backend
-        self._backend = create_backend(settings)
+        # init backend manager
+        self._backend_manager = BackendManager(settings.get('BACKENDS'))
+
+        # get backend
+        self._backend = self._backend_manager.get_backend(settings.get('SPIDER_MANAGER_BACKEND'))
 
     @property
     def settings(self): return self._settings
+
+    @property
+    def backend_manager(self): return self._backend_manager
 
     def start(self, spider):
         self._backend.open(spider)

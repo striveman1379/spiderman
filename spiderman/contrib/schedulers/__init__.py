@@ -1,3 +1,3 @@
 from __future__ import absolute_import
 
-from .spiderman_scheduler import SpidermanScheduler
+from .spiderman import SpidermanScheduler

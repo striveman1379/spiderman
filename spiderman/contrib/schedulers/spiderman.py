@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 from collections import deque
 from scrapy.core.scheduler import Scheduler
-from spiderman.core.manager import SpidermanManager
+from spiderman.core.managers import SpidermanManager
 from spiderman.settings import ScrapySettingsAdapter
 
 
