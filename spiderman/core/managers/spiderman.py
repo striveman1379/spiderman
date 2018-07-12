@@ -20,10 +20,10 @@ class SpidermanManager(object):
     def backend_manager(self): return self._backend_manager
 
     def start(self, spider):
-        self._backend.open(spider)
+        self._backend.start(spider)
 
     def stop(self, reason):
-        self._backend.close(reason)
+        self._backend.stop(reason)
 
     def add_requests(self, requests):
         return self._backend.add_requests(requests)

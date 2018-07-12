@@ -11,13 +11,13 @@ class BackendManager(object):
 
     def open(self, name):
         backend = self.get_backend(name)
-        backend.open()
+        backend.start()
         return backend
 
 
     def close_all(self, reason=None):
-        for name, backend in self._backends.items()
-            backend.close(reason)
+        for name, backend in self._backends.items():
+            backend.stop(reason)
         self._backends = {}
 
     def get_backend(self, name):

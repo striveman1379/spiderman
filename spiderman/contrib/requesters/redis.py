@@ -12,7 +12,7 @@ class RedisRequester(BaseRequester):
     def start(self):
         self._queue_key = self._settings.get('QUEUE_KEY')
         self._queue_cls = self._settings.get('QUEUE_CLASS')
-        return self._backend.start( queue_key=self._queue_key, queue_cls=self._queue_cls)
+        return self._backend.start(queue_key=self._queue_key, queue_cls=self._queue_cls)
 
     def stop(self, reason):
         return self._backend.stop(reason)
