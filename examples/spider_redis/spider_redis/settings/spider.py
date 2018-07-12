@@ -18,7 +18,12 @@ NEWSPIDER_MODULE = 'spider_redis.spiders'
 SCHEDULER = 'spiderman.contrib.schedulers.SpidermanScheduler'
 
 
-
 from .backends import *
 
 SPIDER_MANAGER_BACKEND = 'redis'
+
+
+REQUESTER = {
+    'MODULE': '',
+    'BACKEND': 'redis'
+}
