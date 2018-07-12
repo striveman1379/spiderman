@@ -31,7 +31,7 @@ class BaseRequester(object):
 
     def decode_request(self, encoded):
         dict = loads(encoded)
-        return request_from_dict(dict, self.spider)
+        return request_from_dict(dict, self._spider)
 
     @staticmethod
     def _check_backend(backend, valid_backends):
