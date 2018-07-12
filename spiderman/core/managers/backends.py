@@ -8,9 +8,30 @@ class BackendManager(object):
         self._settings = settings
         self._backends = {}
 
-        # init all backends
-        for name, backend_setting in settings.items():
-            self._backends[name] = load_object(backend_setting['MODULE'])(backend_setting)
+
+    def open(self, name):
+        backend = self.get_backend(name)
+        backend.open()
+        return backend
 
 
-    def get_backend(self, name): return self._backends.get(name, None)
+    def close_all(self, reason=None):
+        for name, backend in self._backends.items()
+            backend.close(reason)
+        self._backends = {}
+
+    def get_backend(self, name):
+        backend = self._backends.get(name, None)
+        if backend is None:
+            backend = self._create_backend(name)
+            self._backends[name] = backend
+
+        return backend
+
+
+    def _create_backend(self, name):
+        backend_setting = self._settings.get(name, None)
+        if backend_setting is None:
+            raise Exception('can not find backend {0}'.format(name))
+
+        return load_object(backend_setting['MODULE'])(backend_setting)
