@@ -1,39 +1,37 @@
-import importlib
-import six
-
 from spiderman.contrib.backends.backend import BaseBackend
-from . import connection, defaults, picklecompat
+from . import connection, picklecompat
 from scrapy.utils.misc import load_object
+
 
 class RedisBackend(BaseBackend):
     def __init__(self, settings):
         self._settings = settings
-        self._queue_key = settings.get('QUEUE_KEY')
-        self._queue_cls = settings.get('QUEUE_CLASS')
         self._request_timeout = settings.get('REQUEST_TIMEOUT')
-        self._serializer = picklecompat
+        self.queue=None
 
     def __len__(self):
         return len(self.queue)
 
-    def open(self, spider):
-        # spider
-        self.spider = spider
+    def start(self, queue_key, queue_cls):
+        if self.is_started():
+            return
+
+        super(RedisBackend, self).start()
 
         # server
         self.server = connection.from_settings(self._settings)
         self.server.ping()
 
         # queue
-        self.queue = load_object(self._queue_cls)(
+        self.queue = load_object(queue_cls)(
             server=self.server,
-            spider=spider,
-            key=self._queue_key % {'spider': spider.name},
-            serializer=self._serializer,
+            key=queue_key,
+            serializer=picklecompat,
         )
 
-    def close(self, reason):
+    def stop(self, reason):
         self.queue.clear()
+        super(RedisBackend, self).stop(reason)
 
     def add_requests(self, requests):
         for r in requests:

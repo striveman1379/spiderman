@@ -6,15 +6,13 @@ from . import picklecompat
 class Base(object):
     """Per-spider base queue class"""
 
-    def __init__(self, server, spider, key, serializer=None):
+    def __init__(self, server, key, serializer=None):
         """Initialize per-spider redis queue.
 
         Parameters
         ----------
         server : StrictRedis
             Redis client instance.
-        spider : Spider
-            Scrapy spider instance.
         key: str
             Redis key where to put and get messages.
         serializer : object
@@ -33,19 +31,18 @@ class Base(object):
                             % serializer)
 
         self.server = server
-        self.spider = spider
-        self.key = key % {'spider': spider.name}
+        self.key = key
         self.serializer = serializer
 
     def _encode_request(self, request):
         """Encode a request object"""
-        obj = request_to_dict(request, self.spider)
+        obj = request_to_dict(request, None)
         return self.serializer.dumps(obj)
 
     def _decode_request(self, encoded_request):
         """Decode an request previously encoded"""
         obj = self.serializer.loads(encoded_request)
-        return request_from_dict(obj, self.spider)
+        return request_from_dict(obj, None)
 
     def __len__(self):
         """Return the length of the queue"""

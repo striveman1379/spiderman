@@ -7,10 +7,13 @@ from . import defaults
 
 # Shortcut maps 'setting name' -> 'parmater name'.
 SETTINGS_PARAMS_MAP = {
-    'REDIS_URL': 'url',
-    'REDIS_HOST': 'host',
-    'REDIS_PORT': 'port',
-    'REDIS_ENCODING': 'encoding',
+    'URL': 'url',
+    'HOST': 'host',
+    'PORT': 'port',
+    'ENCODING': 'encoding',
+    'SOCKET_TIMEOUT': 'socket_timeout',
+    'SOCKET_CONNECT_TIMEOUT': 'socket_connect_timeout',
+    'RETRY_ON_TIMEOUT': 'retry_on_timeout',
 }
 
 
@@ -45,7 +48,11 @@ def get_redis_from_settings(settings):
         Additional client parameters.
 
     """
-    params = defaults.REDIS_PARAMS.copy()
+
+    params = {
+        'encoding':'utf-8',
+        'redis_cls':redis.StrictRedis,
+    }
     params.update(settings.get('PARAMS'))
     # XXX: Deprecate REDIS_* settings.
     for source, dest in SETTINGS_PARAMS_MAP.items():

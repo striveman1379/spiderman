@@ -25,5 +25,7 @@ SPIDER_MANAGER_BACKEND = 'redis'
 
 REQUESTER = {
     'MODULE': '',
-    'BACKEND': 'redis'
+    'BACKEND': 'redis',
+    'QUEUE_KEY': 'requester',
+    'QUEUE_CLASS': 'spiderman.contrib.backends.redis.queue.FifoQueue',
 }
