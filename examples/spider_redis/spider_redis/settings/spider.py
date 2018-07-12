@@ -15,6 +15,7 @@ SPIDER_MODULES = ['spider_redis.spiders']
 NEWSPIDER_MODULE = 'spider_redis.spiders'
 
 
+
 SCHEDULER = 'spiderman.contrib.schedulers.SpidermanScheduler'
 
 

@@ -6,6 +6,7 @@ from .backends import BackendManager
 
 class SpidermanManager(object):
     def __init__(self, settings):
+        # setiings
         self._settings = settings
 
         # init backend manager
@@ -15,6 +16,9 @@ class SpidermanManager(object):
         requester_setting = settings.get('REQUESTER')
         self._requester = load_object(requester_setting.get('MODULE'))(requester_setting, self._requester_manager)
 
+        #spider
+        self._spider = None
+
     @property
     def settings(self): return self._settings
 
@@ -22,6 +26,7 @@ class SpidermanManager(object):
     def backend_manager(self): return self._requester_manager
 
     def start(self, spider):
+        self._spider = spider
         self._requester.start(spider)
 
     def stop(self, reason):
@@ -33,11 +38,10 @@ class SpidermanManager(object):
     def get_requests(self, max_requests=0, **kwargs):
         return self._requester.get_requests(max_requests, **kwargs)
 
-    def page_crawled(self, response):
+    def process_spider_output(self, response, result, spider):
         pass
 
-    def links_extracted(self, request, links):
-        pass
+
 
     def request_error(self, request, error):
         pass
