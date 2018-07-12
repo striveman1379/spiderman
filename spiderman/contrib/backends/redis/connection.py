@@ -2,20 +2,22 @@ import six
 import redis
 from scrapy.utils.misc import load_object
 
-from . import defaults
-
-
 # Shortcut maps 'setting name' -> 'parmater name'.
 SETTINGS_PARAMS_MAP = {
     'URL': 'url',
     'HOST': 'host',
     'PORT': 'port',
     'ENCODING': 'encoding',
-    'SOCKET_TIMEOUT': 'socket_timeout',
-    'SOCKET_CONNECT_TIMEOUT': 'socket_connect_timeout',
-    'RETRY_ON_TIMEOUT': 'retry_on_timeout',
 }
 
+REDIS_CLS = redis.StrictRedis
+# Sane connection defaults.
+REDIS_PARAMS = {
+    'socket_timeout': 30,
+    'socket_connect_timeout': 30,
+    'retry_on_timeout': True,
+    'encoding': 'utf-8',
+}
 
 def get_redis_from_settings(settings):
     """Returns a redis client instance from given Scrapy settings object.
@@ -48,12 +50,7 @@ def get_redis_from_settings(settings):
         Additional client parameters.
 
     """
-
-    params = {
-        'encoding':'utf-8',
-        'redis_cls':redis.StrictRedis,
-    }
-    params.update(settings.get('PARAMS'))
+    params = REDIS_PARAMS.copy()
     # XXX: Deprecate REDIS_* settings.
     for source, dest in SETTINGS_PARAMS_MAP.items():
         val = settings.get(source)

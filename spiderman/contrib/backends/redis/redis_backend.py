@@ -1,6 +1,7 @@
 from spiderman.contrib.backends.backend import BaseBackend
-from . import connection, picklecompat
+from . import connection
 from scrapy.utils.misc import load_object
+from .queue import FifoQueue
 
 
 class RedisBackend(BaseBackend):
@@ -10,10 +11,12 @@ class RedisBackend(BaseBackend):
         self.queue=None
 
     def __len__(self):
+        if self.queue is None:
+            return -1
         return len(self.queue)
 
-    def start(self, queue_key, queue_cls):
-        if self.is_started():
+    def start(self, queue_key):
+        if self.is_running():
             return
 
         super(RedisBackend, self).start()
@@ -23,22 +26,27 @@ class RedisBackend(BaseBackend):
         self.server.ping()
 
         # queue
-        self.queue = load_object(queue_cls)(
-            server=self.server,
-            key=queue_key,
-            serializer=picklecompat,
-        )
+        self.queue = FifoQueue(server=self.server, key=queue_key)
 
     def stop(self, reason):
-        self.queue.clear()
+        if not self.is_running():
+            return
+
+        if self.queue:
+            self.queue.clear()
+
         super(RedisBackend, self).stop(reason)
 
     def add_requests(self, requests):
+        if self.queue is None:
+            return False
         for r in requests:
             self.queue.push(r)
         return True
 
     def get_requests(self, max_requests=0, **kwargs):
+        if self.queue is None:
+            return []
         request = self.queue.pop(self._request_timeout)
 
         return [request] if request is not None else []

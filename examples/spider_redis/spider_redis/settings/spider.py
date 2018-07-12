@@ -18,15 +18,12 @@ NEWSPIDER_MODULE = 'spider_redis.spiders'
 
 SCHEDULER = 'spiderman.contrib.schedulers.SpidermanScheduler'
 
+SPIDER_MIDDLEWARES = {}
 
 from .backends import *
 
-SPIDER_MANAGER_BACKEND = 'redis'
-
-
 REQUESTER = {
-    'MODULE': '',
+    'MODULE': 'spiderman.contrib.requesters.redis.RedisRequester',
     'BACKEND': 'redis',
     'QUEUE_KEY': 'requester',
-    'QUEUE_CLASS': 'spiderman.contrib.backends.redis.queue.FifoQueue',
 }

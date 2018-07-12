@@ -1,11 +1,11 @@
 class BaseBackend(object):
-    _is_started = False
+    _is_running = False
 
     def start(self):
-        self._is_started = True
+        self._is_running = True
 
     def stop(self, reason):
-        self._is_started = False
+        self._is_running = False
 
-    def is_started(self):
-        return self._is_started
+    def is_running(self):
+        return self._is_running

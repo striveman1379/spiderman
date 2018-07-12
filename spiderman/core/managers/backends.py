@@ -2,18 +2,15 @@ from __future__ import absolute_import
 from scrapy.utils.misc import load_object
 
 
-
 class BackendManager(object):
     def __init__(self, settings):
         self._settings = settings
         self._backends = {}
 
-
     def open(self, name):
         backend = self.get_backend(name)
         backend.start()
         return backend
-
 
     def close_all(self, reason=None):
         for name, backend in self._backends.items():
@@ -27,7 +24,6 @@ class BackendManager(object):
             self._backends[name] = backend
 
         return backend
-
 
     def _create_backend(self, name):
         backend_setting = self._settings.get(name, None)
