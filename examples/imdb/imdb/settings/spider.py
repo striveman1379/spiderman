@@ -34,5 +34,5 @@ REQUESTER = {
 
 
 ITEM_PIPELINES = {
-    'imdb.pipelines.MysqlPipeline': 300,
+    'examples.imdb.imdb.pipelines.MysqlPipeline': 300,
 }

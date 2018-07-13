@@ -7,5 +7,5 @@ class MysqlPipeline(BackendPipeline):
     BACKEND = 'mysql'
 
     def process_item(self, item, spider):
-        self._backend.insert(self, "top250", item)
+        self._backend.insert("top250", item)
 

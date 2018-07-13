@@ -56,9 +56,9 @@ class MySqlBackend(BaseBackend):
         for (k,v) in item.items():
             cmd_title.append(str(k))
             if isinstance(v, str):
-                cmd_value.append("'{0}'".format(v))
+                cmd_value.append("'{0}'".format(pymysql.escape_string(v)))
             else:
-                cmd_value.append(str(v))
+                cmd_value.append(pymysql.escape_string(v))
 
         cmd_insert = cmd_format % (tablename, ','.join(cmd_title), ','.join(cmd_value))
         self.execute_command(cmd_insert)
