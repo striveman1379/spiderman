@@ -7,7 +7,7 @@ port = settings.get('PORT')
 username = settings.get('USER')
 password = settings.get('PASSWD')
 database = settings.get('DBNAME')
-tablename = 'testtable'
+tablename = 'top250'
 primary_key = 'movie'
 
 SqlMoveItem = {
