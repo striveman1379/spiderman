@@ -1,13 +1,5 @@
 from spiderman.contrib.backends.backend import BaseBackend
-import scrapy
 import pymysql
-
-MYSQL_HOST = 'localhost'
-MYSQL_PORT = '3306'
-MYSQL_DBNAME = 'database1'
-MYSQL_USER = 'root'
-MYSQL_PASSWD = '123456'
-MYSQL_TBNAME = 'table1'
 
 
 class MySqlBackend(BaseBackend):
