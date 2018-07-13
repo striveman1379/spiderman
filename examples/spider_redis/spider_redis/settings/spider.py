@@ -31,3 +31,9 @@ REQUESTER = {
     'BACKEND': 'redis',
     'QUEUE_KEY': 'requester',
 }
+
+
+ITEM_PIPELINES = {
+    'example.pipelines.ExamplePipeline': 300,
+    'scrapy_redis.pipelines.RedisPipeline': 400,
+}

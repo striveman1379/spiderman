@@ -22,6 +22,9 @@ class SpidermanScheduler(Scheduler):
     @property
     def crawler(self): return self._crawler
 
+    @property
+    def manager(self): return self._manager
+
     @classmethod
     def from_crawler(cls, crawler):
         return cls(crawler)
