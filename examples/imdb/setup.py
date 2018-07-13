@@ -8,12 +8,12 @@ username = settings.get('USER')
 password = settings.get('PASSWD')
 database = settings.get('DBNAME')
 tablename = 'testtable'
-primary_key = 'rating'
+primary_key = 'movie'
 
 SqlMoveItem = {
     'movie': 'VARCHAR(255)',
     'url': 'VARCHAR(255)',
-    'rating': 'INT',
+    'rating': 'VARCHAR(255)',
     'spider': 'VARCHAR(255)',
 }
 
