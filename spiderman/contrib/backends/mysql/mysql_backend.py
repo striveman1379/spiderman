@@ -45,7 +45,7 @@ class MySqlBackend(BaseBackend):
             return False
         return True
 
-    def insert(self,tablename, item):
+    def insert(self, tablename, item):
         if not self.is_valid(): return
 
         # insert item

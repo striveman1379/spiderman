@@ -20,6 +20,6 @@ BACKENDS = {
         'PORT': 3306,
         'USER': 'root',
         'PASSWD': '123456',
-        'DBNAME': 'default',
+        'DBNAME': 'testmysql',
     },
 }
