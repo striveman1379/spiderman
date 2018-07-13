@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for spider_redis project
+# Scrapy settings for imdb project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -11,8 +11,8 @@
 
 BOT_NAME = 'imdb'
 
-SPIDER_MODULES = ['spider_redis.spiders']
-NEWSPIDER_MODULE = 'spider_redis.spiders'
+SPIDER_MODULES = ['imdb.spiders']
+NEWSPIDER_MODULE = 'imdb.spiders'
 
 
 
@@ -34,6 +34,5 @@ REQUESTER = {
 
 
 ITEM_PIPELINES = {
-    'example.pipelines.ExamplePipeline': 300,
-    'scrapy_redis.pipelines.RedisPipeline': 400,
+    'imdb.pipelines.MysqlPipeline': 300,
 }

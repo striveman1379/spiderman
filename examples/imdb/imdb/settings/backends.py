@@ -15,6 +15,7 @@ BACKENDS = {
     },
     'mysql':
     {
+        'MODULE': 'spiderman.contrib.backends.MySqlBackend',
         'HOST': '127.0.01',
         'PORT': 3306,
         'USER': 'root',
