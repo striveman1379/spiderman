@@ -12,7 +12,15 @@ class BackendManager(object):
         backend.start()
         return backend
 
-    def close_all(self, reason=None):
+    def close(self, name):
+        backend = self._backends.get(name, None)
+        if backend is None: return
+        backend.stop()
+        del self._backends[name]
+
+    def start(self): pass
+
+    def stop(self, reason=None):
         for name, backend in self._backends.items():
             backend.stop(reason)
         self._backends = {}
