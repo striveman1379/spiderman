@@ -12,5 +12,13 @@ BACKENDS = {
         'SOCKET_TIMEOUT': 30,
         'SOCKET_CONNECT_TIMEOUT': 30,
         'RETRY_ON_TIMEOUT': True,
-    }
+    },
+    'mysql':
+    {
+        'HOST': '127.0.01',
+        'PORT': 3306,
+        'USER': 'root',
+        'PASSWD': '123456',
+        'DBNAME': 'default',
+    },
 }

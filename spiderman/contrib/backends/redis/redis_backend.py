@@ -5,10 +5,13 @@ from .queue import FifoQueue
 
 
 class RedisBackend(BaseBackend):
+    server = None
+    queue = None
+
     def __init__(self, settings):
         self._settings = settings
         self._request_timeout = settings.get('REQUEST_TIMEOUT')
-        self.queue=None
+        self.queue = None
 
     def __len__(self):
         if self.queue is None:
@@ -31,10 +34,8 @@ class RedisBackend(BaseBackend):
     def stop(self, reason):
         if not self.is_running():
             return
-
-        if self.queue:
-            self.queue.clear()
-
+        self.server.shutdown()
+        self.server = None
         super(RedisBackend, self).stop(reason)
 
     def add_requests(self, requests):
@@ -50,3 +51,11 @@ class RedisBackend(BaseBackend):
         request = self.queue.pop(self._request_timeout)
 
         return [request] if request is not None else []
+
+    def clear(self):
+        if self.queue:
+            self.queue.clear()
+
+    def execute_command(self, *args, **options):
+        if self.server is None: return
+        self.server.execute_command(self, *args, **options)
