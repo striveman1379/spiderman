@@ -39,7 +39,7 @@ class SpidermanManager(object):
         return self._requester.get_requests(max_requests, **kwargs)
 
     def process_spider_output(self, response, result, spider):
-        pass
+        return result
 
 
 

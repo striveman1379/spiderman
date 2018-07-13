@@ -18,7 +18,11 @@ NEWSPIDER_MODULE = 'spider_redis.spiders'
 
 SCHEDULER = 'spiderman.contrib.schedulers.SpidermanScheduler'
 
-SPIDER_MIDDLEWARES = {}
+
+
+SPIDER_MIDDLEWARES = {
+    'spiderman.contrib.middlewares.SpiderMiddleware': 0
+}
 
 from .backends import *
 

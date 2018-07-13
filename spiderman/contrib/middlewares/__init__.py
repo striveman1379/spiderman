@@ -1,4 +1,4 @@
 from __future__ import absolute_import
 
-from .spiderman import SpidermanMiddleware
+from .spider import SpiderMiddleware
 

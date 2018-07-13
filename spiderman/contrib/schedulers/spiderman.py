@@ -46,5 +46,5 @@ class SpidermanScheduler(Scheduler):
 
 
     def process_spider_output(self, response, result, spider):
-        self._manager.process_spider_output(response, result, spider)
+        return self._manager.process_spider_output(response, result, spider)
 
