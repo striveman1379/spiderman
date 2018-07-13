@@ -2,10 +2,9 @@ import scrapy
 
 
 class RedisSpider(scrapy.Spider):
-    name = "redis"
+    name = "top"
     start_urls = [
-        'http://quotes.toscrape.com/tag/humor/',
-        #'http://www.baidu.com',
+        'https://www.imdb.com/chart/top',
     ]
 
     def __init__(self, *args, **kwargs):
