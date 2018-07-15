@@ -1,4 +1,6 @@
+
 from __future__ import absolute_import
 
 
-from .redis import RedisRequester
+from .base import BaseReporter
+

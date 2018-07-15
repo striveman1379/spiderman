@@ -24,15 +24,28 @@ SPIDER_MIDDLEWARES = {
     'spiderman.contrib.middlewares.SpiderMiddleware': 0
 }
 
+
+DOWNLOADER_MIDDLEWARES = {
+    'spiderman.contrib.middlewares.DownloaderMiddleware': 0
+}
+
 from .backends import *
 
 REQUESTER = {
-    'MODULE': 'spiderman.contrib.requesters.redis.RedisRequester',
+    'MODULE': 'spiderman.contrib.requesters.RedisRequester',
     'BACKEND': 'redis',
     'QUEUE_KEY': 'requester',
+}
+
+REPORTER = {
+    'MODULE': 'spiderman.contrib.reporters.BaseReporter',
 }
 
 
 ITEM_PIPELINES = {
     'examples.imdb.imdb.pipelines.MysqlPipeline': 300,
 }
+
+
+
+#DOWNLOAD_TIMEOUT = 0.1

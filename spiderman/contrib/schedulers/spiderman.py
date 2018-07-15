@@ -48,6 +48,9 @@ class SpidermanScheduler(Scheduler):
         return self._pending_requests.popleft() if self._pending_requests else None
 
 
-    def process_spider_output(self, response, result, spider):
-        return self._manager.process_spider_output(response, result, spider)
+    def process_download_exception(self, request, exception, spider):
+        return self._manager.process_download_exception(request, exception, spider)
 
+
+    def process_spider_exception(self, response, exception, spider):
+        return self._manager.process_spider_exception(response, exception, spider)
