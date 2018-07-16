@@ -96,7 +96,15 @@ class LifoQueue(Base):
         return data
 
 
-# TODO: Deprecate the use of these names.
-SpiderQueue = FifoQueue
-SpiderStack = LifoQueue
-SpiderPriorityQueue = PriorityQueue
+class UnsortedSet(Base):
+    def __len__(self):
+        return self.server.scard(self.key)
+
+    def push(self, request):
+        """Push a request"""
+        self.server.sadd(self.key, request)
+
+    def pop(self, timeout=0):
+        """Pop a request"""
+        data = self.server.spop(self.key)
+        return data

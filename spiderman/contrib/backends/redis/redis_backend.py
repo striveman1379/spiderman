@@ -1,24 +1,25 @@
 from spiderman.contrib.backends.backend import BaseBackend
 from . import connection
 from scrapy.utils.misc import load_object
-from .queue import FifoQueue
+from .container import FifoQueue, UnsortedSet
 
 
 class RedisBackend(BaseBackend):
     server = None
-    queue = None
+    container = None
+    deduplicate_key = 'default_deduplicate'
 
     def __init__(self, settings):
         self._settings = settings
         self._request_timeout = settings.get('REQUEST_TIMEOUT')
-        self.queue = None
+        self.container = None
 
     def __len__(self):
-        if self.queue is None:
+        if self.container is None:
             return -1
-        return len(self.queue)
+        return len(self.container)
 
-    def start(self, queue_key):
+    def start(self, container_key):
         if self.is_running():
             return
 
@@ -28,34 +29,39 @@ class RedisBackend(BaseBackend):
         self.server = connection.from_settings(self._settings)
         self.server.ping()
 
-        # queue
-        self.queue = FifoQueue(server=self.server, key=queue_key)
+        # container
+        self.container = UnsortedSet(server=self.server, key=container_key)
+
+        # deduplicate
+        self.deduplicate_key = container_key + '_deduplicate'
 
     def stop(self, reason):
         if not self.is_running():
             return
-        self.server.shutdown()
         self.server = None
         super(RedisBackend, self).stop(reason)
 
     def add_requests(self, requests):
-        if self.queue is None:
+        if self.container is None:
             return False
         for r in requests:
-            self.queue.push(r)
+            self.container.push(r)
         return True
 
     def get_requests(self, max_requests=0, **kwargs):
-        if self.queue is None:
+        if self.container is None:
             return []
-        request = self.queue.pop(self._request_timeout)
+        request = self.container.pop(self._request_timeout)
 
         return [request] if request is not None else []
 
     def clear(self):
-        if self.queue:
-            self.queue.clear()
+        if self.container:
+            self.container.clear()
 
     def execute_command(self, *args, **options):
         if self.server is None: return
         self.server.execute_command(self, *args, **options)
+
+    def set_flag(self, flag):
+        return self.server.sadd(self.deduplicate_key, flag) == 1

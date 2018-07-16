@@ -34,7 +34,7 @@ from .backends import *
 REQUESTER = {
     'MODULE': 'spiderman.contrib.requesters.RedisRequester',
     'BACKEND': 'redis',
-    'QUEUE_KEY': 'requester',
+    'CONTAINER_KEY': 'requester',
 }
 
 REPORTER = {
@@ -46,6 +46,5 @@ ITEM_PIPELINES = {
     'examples.imdb.imdb.pipelines.MysqlPipeline': 300,
 }
 
-
-
 #DOWNLOAD_TIMEOUT = 0.1
+LOG_LEVEL = 'INFO'

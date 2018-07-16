@@ -15,7 +15,7 @@ class BackendPipeline(object):
 
     def close_spider(self, spider):
         if self._backend is None: return
-        self._backend.close()
+        self._backend.stop('')
 
 
 
