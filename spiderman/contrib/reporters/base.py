@@ -16,3 +16,6 @@ class BaseReporter(object):
 
     def on_spider_exception(self, response, exception, spider):
         pass
+
+    def on_spider_error(self, failure, response, spider):
+        pass

@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 from collections import deque
+from scrapy import signals
 from scrapy.core.scheduler import Scheduler
 from spiderman.core.managers import SpidermanManager
 from spiderman.settings import ScrapySettingsAdapter
@@ -33,7 +34,12 @@ class SpidermanScheduler(Scheduler):
         return len(self) > 0
 
     def open(self, spider):
+        # start manager
         self._manager.start(spider)
+
+        # handle spider error
+        spider.crawler.signals.connect(self.process_spider_error, signal=signals.spider_error)
+
 
     def close(self, reason):
         self._manager.stop(reason)
@@ -54,3 +60,7 @@ class SpidermanScheduler(Scheduler):
 
     def process_spider_exception(self, response, exception, spider):
         return self._manager.process_spider_exception(response, exception, spider)
+
+
+    def process_spider_error(self, failure, response, spider):
+        return self._manager.process_spider_error(failure, response, spider)

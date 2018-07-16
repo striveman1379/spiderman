@@ -29,3 +29,6 @@ class ReporterManager(object):
 
     def on_spider_exception(self, response, exception, spider):
         self._reporter.on_download_exception(response, exception, spider)
+
+    def on_spider_error(self, failure, response, spider):
+        self._reporter.on_spider_error(failure, response, spider)

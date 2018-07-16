@@ -56,3 +56,6 @@ class SpidermanManager(object):
 
     def process_spider_exception(self, response, exception, spider):
         return self._reporter_manager.on_spider_exception(response, exception, spider)
+
+    def process_spider_error(self, failure, response, spider):
+        return self._reporter_manager.on_spider_error(failure, response, spider)
