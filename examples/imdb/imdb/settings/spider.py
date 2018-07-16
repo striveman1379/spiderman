@@ -14,7 +14,7 @@ BOT_NAME = 'imdb'
 SPIDER_MODULES = ['imdb.spiders']
 NEWSPIDER_MODULE = 'imdb.spiders'
 
-MAX_NEXT_REQUETS = 5
+
 
 SCHEDULER = 'spiderman.contrib.schedulers.SpidermanScheduler'
 
@@ -51,4 +51,9 @@ ITEM_PIPELINES = {
 }
 
 #DOWNLOAD_TIMEOUT = 0.1
+
+CONCURRENT_REQUESTS = 10
+
+MAX_NEXT_REQUETS = CONCURRENT_REQUESTS
+
 LOG_LEVEL = 'INFO'
