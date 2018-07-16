@@ -34,3 +34,8 @@ class RedisBackend(BaseBackend):
     def execute_command(self, *args, **options):
         if self._server is None: return
         return self._server.execute_command(*args, **options)
+
+    def pipeline(self):
+        if self._server is None:
+            return None
+        return self._server.pipeline(transaction=True)
