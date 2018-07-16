@@ -22,14 +22,14 @@ def start(args):
 
 
 def stop(args):
-    cmd = "ps -ef | grep start.py | awk '{print $2}'"
-    pids = os.popen(cmd).read().split('\n')
-    cmd = 'kill -9 '
+    search_cmd = "ps -ef | grep start.py | awk '{print $2}'"
+    pids = os.popen(search_cmd).read().split('\n')
+    kill_cmd = 'kill -9 '
     for pid in pids:
-        cmd += pid
-        cmd += ' '
+        kill_cmd += pid
+        kill_cmd += ' '
 
-    print(os.popen(cmd))
+    print(os.popen(kill_cmd).read())
 
 
 
