@@ -16,7 +16,7 @@ primary_key = 'movie'
 redis_settings = backends.BACKENDS['redis']
 
 SqlMoveItem = {
-    'movie': 'VARCHAR(255)',
+    'movie': 'VARCHAR(128)',
     'url': 'VARCHAR(255)',
     'rating': 'VARCHAR(255)',
     'spider': 'VARCHAR(255)',

@@ -42,7 +42,7 @@ REQUESTER = {
 REPORTER = {
     'MODULE': 'spiderman.contrib.reporters.RedisReporter',
     'BACKEND': 'redis',
-    'REPORTER_PREFIX': '__reporter__',
+    'REPORTER_PREFIX': 'reporter@',
 }
 
 

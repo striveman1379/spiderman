@@ -20,7 +20,7 @@ class ImdbSpider(scrapy.Spider):
 
 
     def start_requests(self):
-       yield super(ImdbSpider, self).start_requests()
+       return super(ImdbSpider, self).start_requests()
 
     def parse(self, response):
         # movie_urls = response.xpath('//*[@id="main"]/div/span/div/div/div[3]/table/tbody/tr/td[1]/a/@href').extract()
