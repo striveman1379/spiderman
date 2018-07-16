@@ -35,10 +35,14 @@ REQUESTER = {
     'MODULE': 'spiderman.contrib.requesters.RedisRequester',
     'BACKEND': 'redis',
     'CONTAINER_KEY': 'requester',
+    'DEDUPLICATER_KEY': 'deduplicater',
+    'REQUEST_TIMEOUT': 3,
 }
 
 REPORTER = {
-    'MODULE': 'spiderman.contrib.reporters.BaseReporter',
+    'MODULE': 'spiderman.contrib.reporters.RedisReporter',
+    'BACKEND': 'redis',
+    'REPORTER_PREFIX': '__reporter__',
 }
 
 

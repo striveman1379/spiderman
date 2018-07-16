@@ -50,8 +50,13 @@ if __name__ == '__main__':
     redis_pool = redis.ConnectionPool(host=redis_settings.get('HOST'), port=6379, decode_responses=True)
     redis_server = redis.StrictRedis(connection_pool=redis_pool)
 
-    container_key = spider_settings.REQUESTER.get('CONTAINER_KEY')
-    redis_server.delete(container_key)
-    redis_server.delete(container_key + '_deduplicate')
+    redis_server.delete(spider_settings.REQUESTER.get('CONTAINER_KEY'))
+    redis_server.delete(spider_settings.REQUESTER.get('DEDUPLICATER_KEY'))
+
+    reporter_prefix = spider_settings.REPORTER.get('REPORTER_PREFIX')
+    keys = redis_server.keys(reporter_prefix+'*')
+    for k in keys:
+        redis_server.delete(k)
+
 
 

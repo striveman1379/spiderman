@@ -1,14 +1,13 @@
 
 
 class BaseReporter(object):
-
     def __init__(self, settings):
         self._settings = settings
 
     def on_receive_requests(self, requests):
         pass
 
-    def on_process_page(self):
+    def on_process_page(self, request):
         pass
 
     def on_download_exception(self, request, exception, spider):

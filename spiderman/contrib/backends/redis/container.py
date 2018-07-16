@@ -1,6 +1,5 @@
 class Base(object):
-    """Per-spider base queue class"""
-
+    field = None
     def __init__(self, server, key):
         self.server = server
         self.key = key
@@ -9,12 +8,12 @@ class Base(object):
         """Return the length of the queue"""
         raise NotImplementedError
 
-    def push(self, request):
-        """Push a request"""
+    def push(self, value, filed=None):
+        """Push a value"""
         raise NotImplementedError
 
     def pop(self, timeout=0):
-        """Pop a request"""
+        """Pop a value"""
         raise NotImplementedError
 
     def clear(self):
@@ -29,12 +28,12 @@ class FifoQueue(Base):
         """Return the length of the queue"""
         return self.server.llen(self.key)
 
-    def push(self, request):
-        """Push a request"""
-        self.server.lpush(self.key, request)
+    def push(self, value, filed=None):
+        """Push a value"""
+        return self.server.lpush(self.key, value) == 1
 
     def pop(self, timeout=0):
-        """Pop a request"""
+        """Pop a value"""
         if timeout > 0:
             data = self.server.brpop(self.key, timeout)
             if isinstance(data, tuple):
@@ -51,17 +50,13 @@ class PriorityQueue(Base):
         """Return the length of the queue"""
         return self.server.zcard(self.key)
 
-    def push(self, request):
-        """Push a request"""
+    def push(self, value, filed=None):
         score = 0
-        # We don't use zadd method as the order of arguments change depending on
-        # whether the class is Redis or StrictRedis, and the option of using
-        # kwargs only accepts strings, not bytes.
-        self.server.execute_command('ZADD', self.key, score, request)
+        return self.server.execute_command('ZADD', self.key, score, value) == 1
 
     def pop(self, timeout=0):
         """
-        Pop a request
+        Pop a value
         timeout not support in this queue class
         """
         # use atomic range/remove using multi/exec
@@ -80,12 +75,11 @@ class LifoQueue(Base):
         """Return the length of the stack"""
         return self.server.llen(self.key)
 
-    def push(self, request):
-        """Push a request"""
-        self.server.lpush(self.key, request)
+    def push(self, value, filed=None):
+        return self.server.lpush(self.key, value) == 1
 
     def pop(self, timeout=0):
-        """Pop a request"""
+        """Pop a value"""
         if timeout > 0:
             data = self.server.blpop(self.key, timeout)
             if isinstance(data, tuple):
@@ -100,11 +94,26 @@ class UnsortedSet(Base):
     def __len__(self):
         return self.server.scard(self.key)
 
-    def push(self, request):
-        """Push a request"""
-        self.server.sadd(self.key, request)
+    def push(self, value):
+        """Push a value"""
+        return self.server.sadd(self.key, value) == 1
 
     def pop(self, timeout=0):
-        """Pop a request"""
+        """Pop a value"""
+        data = self.server.spop(self.key)
+        return data
+
+
+class HashTable(Base):
+    def __len__(self):
+        return self.server.hlen(self.key)
+
+    def push(self, value, filed=None):
+        if filed is None:
+            return False
+        return self.server.hset(self.key, filed, value) == 1
+
+    def pop(self, timeout=0):
+        """Pop a value"""
         data = self.server.spop(self.key)
         return data

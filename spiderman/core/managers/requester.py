@@ -13,10 +13,8 @@ class RequesterManager(object):
     def stop(self, reason=None):
         return self._requester.stop(reason)
 
-
     def add_requests(self, requests):
         return self._requester.add_requests(requests)
 
     def get_requests(self, max_requests=0, **kwargs):
         return self._requester.get_requests(max_requests, **kwargs)
-

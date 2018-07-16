@@ -6,30 +6,41 @@ class RedisRequester(BaseRequester):
     VALID_BACKENDS = [RedisBackend]
 
     #default
-    _container_key = 'default'
+    _container_key = 'requester'
+    _deduplicater_key = "requester_deduplicate"
+    _request_timeout = 0
 
     def start(self, spider):
         super(RedisRequester, self).start(spider)
 
+        # read settings
+        self._request_timeout = self._settings.get('REQUEST_TIMEOUT')
         self._container_key = self._settings.get('CONTAINER_KEY')
-        return self._backend.start(container_key=self._container_key)
+        self._deduplicater_key = self._settings.get('DEDUPLICATER_KEY')
+
+        # connect redis server
+        self._backend.start()
+        return
 
     def stop(self, reason):
         super(RedisRequester, self).stop(reason)
-
         return self._backend.stop(reason)
 
     def add_requests(self, requests):
-        request_list = []
         for r in requests:
-            if self._backend.set_flag(r.url):
-                request_list.append(self.encode_request(r))
-            # else:
-            #   print('add deduplicate request >> ', r.url)
-        return self._backend.add_requests(request_list)
+            if self._backend.execute_command("SADD", self._deduplicater_key, r.url) == 1:
+                self._backend.execute_command("LPUSH", self._container_key, self.encode_request(r))
 
     def get_requests(self, max_requests=0, **kwargs):
-        requests = self._backend.get_requests(max_requests, **kwargs)
-        if len(requests) > 0:
-            requests = [self.decode_request(r) for r in requests]
-        return requests
+        data = None
+        if self._request_timeout > 0:
+            data = self._backend.execute_command("BRPOP", self._container_key, self._request_timeout)
+            if isinstance(data, tuple):
+                data = data[1]
+        else:
+            data = self._backend.execute_command("RPOP", self._container_key)
+
+        if data is None:
+            return []
+        else:
+            return [self.decode_request(data)]

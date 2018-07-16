@@ -7,7 +7,6 @@ BACKENDS = {
         'URL': None,
         'HOST': 'localhost',
         'PORT': 6379,
-        'REQUEST_TIMEOUT': 3,
 
         'SOCKET_TIMEOUT': 30,
         'SOCKET_CONNECT_TIMEOUT': 30,

@@ -17,7 +17,7 @@ class SpidermanManager(object):
         self._requester_manager = RequesterManager(settings.get('REQUESTER'), self._backend_manager)
 
         # reporter manager
-        self._reporter_manager = ReporterManager(settings.get('REPORTER'))
+        self._reporter_manager = ReporterManager(settings.get('REPORTER'), self._backend_manager)
 
         #spider
         self._spider = None
@@ -39,7 +39,7 @@ class SpidermanManager(object):
         # start manager
         self._backend_manager.start()
         self._requester_manager.start(spider)
-        self._reporter_manager.start()
+        self._reporter_manager.start(spider)
 
     def stop(self, reason):
         self._requester_manager.stop(reason)

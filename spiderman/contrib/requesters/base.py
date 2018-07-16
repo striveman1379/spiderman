@@ -1,6 +1,7 @@
 from pickle import loads,dumps
 from scrapy.utils.reqser import request_to_dict, request_from_dict
 
+
 class BaseRequester(object):
 
     VALID_BACKENDS = []
