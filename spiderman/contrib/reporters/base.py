@@ -7,9 +7,6 @@ class BaseReporter(object):
     def on_receive_requests(self, requests):
         pass
 
-    def on_process_page(self, request):
-        pass
-
     def on_download_exception(self, request, exception, spider):
         pass
 

@@ -24,12 +24,8 @@ class RedisReporter(BackendReporter):
             key = self._reporter_prefix + r.url
             self._backend.execute_command("HMSET", key,
                                           'status', 'on_receive',
-                                          'exception', 'no_error'
+                                          'exception', 'None'
                                           )
-
-    def on_process_page(self, request):
-        key = self._reporter_prefix + request.url
-        self._backend.execute_command("HSET", key, 'status', 'on_process')
 
     def on_download_exception(self, request, exception, spider):
         key = self._reporter_prefix + request.url
@@ -53,4 +49,11 @@ class RedisReporter(BackendReporter):
                                       'spider_id', spider.id,
                                       'status', 'on_spider',
                                       'exception', msgpack.packb(failure)
+                                      )
+
+    def on_item_scraped(self, item, response, spider):
+        key = self._reporter_prefix + response.url
+        self._backend.execute_command("HMSET", key,
+                                      'spider_id', spider.id,
+                                      'status', 'on_item_scraped',
                                       )

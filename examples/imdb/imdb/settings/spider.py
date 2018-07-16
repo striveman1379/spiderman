@@ -14,7 +14,7 @@ BOT_NAME = 'imdb'
 SPIDER_MODULES = ['imdb.spiders']
 NEWSPIDER_MODULE = 'imdb.spiders'
 
-
+MAX_NEXT_REQUETS = 5
 
 SCHEDULER = 'spiderman.contrib.schedulers.SpidermanScheduler'
 

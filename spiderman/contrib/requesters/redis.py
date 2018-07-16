@@ -44,15 +44,24 @@ class RedisRequester(BaseRequester):
         p.execute()
 
     def get_requests(self, max_requests=0, **kwargs):
-        data = None
-        if self._request_timeout > 0:
-            data = self._backend.execute_command("BRPOP", self._container_key, self._request_timeout)
-            if isinstance(data, tuple):
-                data = data[1]
-        else:
-            data = self._backend.execute_command("RPOP", self._container_key)
+        p = self._backend.pipeline()
+        if p is None:
+            return
 
-        if data is None:
-            return []
-        else:
-            return [self.decode_request(data)]
+        for i in range(max(1,max_requests)):
+            if self._request_timeout > 0:
+                p.execute_command("BRPOP", self._container_key, self._request_timeout)
+            else:
+                p.execute_command("RPOP", self._container_key)
+
+        result = p.execute()
+
+        requests = []
+        for data in result:
+            if data is None:
+                continue
+            if isinstance(data, tuple):
+                requests.append(self.decode_request(data[1]))
+            else:
+                requests.append(self.decode_request(data))
+        return requests

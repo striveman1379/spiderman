@@ -17,9 +17,6 @@ class ReporterManager(object):
     def on_receive_requests(self, requests):
         self._reporter.on_receive_requests(requests)
 
-    def on_process_page(self, request):
-        self._reporter.on_process_page(request)
-
     def on_download_exception(self, request, exception, spider):
         self._reporter.on_download_exception(request, exception, spider)
 
