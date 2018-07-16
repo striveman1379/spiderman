@@ -46,7 +46,8 @@ class MySqlBackend(BaseBackend):
         return True
 
     def insert(self, tablename, item):
-        if not self.is_valid(): return
+        if not self.is_valid():
+            return
 
         # insert item
         cmd_format = "insert into %s(%s) value(%s)"
@@ -73,6 +74,7 @@ class MySqlBackend(BaseBackend):
         pass
 
     def execute_command(self, cmd):
-        if not self.is_valid(): return
+        if not self.is_valid():
+            return
         self.connect_cursor.execute(cmd)
         self.connection.commit()
