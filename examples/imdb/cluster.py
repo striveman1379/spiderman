@@ -2,6 +2,7 @@
 import os
 import shutil
 import argparse
+import socket
 
 start_path = os.path.join(os.path.dirname(__file__), 'start.py')
 log_path = os.path.join(os.getcwd(), '.logs')
@@ -13,7 +14,8 @@ def start(args):
 
     for i in range(args.processes):
         log_file_path = os.path.join(log_path, 'spider_{0}.log'.format(i))
-        cmd = 'nohup python {0} crawl imdb > {1} &'.format(start_path, log_file_path)
+        params = '-s SPIDER_ID={0}@{1}'.format(socket.gethostname, i)
+        cmd = 'nohup python {0} crawl imdb {1} > {2} &'.format(start_path, params, log_file_path)
         print(cmd)
         os.system(cmd)
 

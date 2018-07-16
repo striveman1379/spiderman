@@ -18,3 +18,9 @@ class BaseReporter(object):
 
     def on_spider_error(self, failure, response, spider):
         pass
+
+    def on_item_scraped(self, item, response, spider):
+        pass
+
+    def on_item_dropped(self, item, spider, exception):
+        pass

@@ -64,6 +64,11 @@ class SpidermanManager(object):
     def process_spider_error(self, failure, response, spider):
         return self._reporter_manager.on_spider_error(failure, response, spider)
 
+    def process_item_scraped(self, item, response, spider):
+        return self._reporter_manager.on_item_scraped(item, response, spider)
+
+    def process_item_dropped(self, item, spider, exception):
+        return self._reporter_manager.on_item_dropped(item, spider, exception)
 
     def _init_spider(self, spider):
         id = self._settings.get('SPIDER_ID')

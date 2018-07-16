@@ -37,8 +37,10 @@ class SpidermanScheduler(Scheduler):
         # start manager
         self._manager.start(spider)
 
-        # handle spider error
+        # handle event
         spider.crawler.signals.connect(self.process_spider_error, signal=signals.spider_error)
+        spider.crawler.signals.connect(self.process_item_scraped, signal=signals.item_scraped)
+        spider.crawler.signals.connect(self.process_item_dropped, signal=signals.item_dropped)
 
 
     def close(self, reason):
@@ -64,3 +66,10 @@ class SpidermanScheduler(Scheduler):
 
     def process_spider_error(self, failure, response, spider):
         return self._manager.process_spider_error(failure, response, spider)
+
+
+    def process_item_scraped(self, item, response, spider):
+        return self._manager.process_item_scraped(item, response, spider)
+
+    def process_item_dropped(self, item, spider, exception):
+        return self._manager.process_item_dropped(item, spider, exception)

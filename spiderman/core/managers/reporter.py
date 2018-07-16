@@ -28,3 +28,9 @@ class ReporterManager(object):
 
     def on_spider_error(self, failure, response, spider):
         self._reporter.on_spider_error(failure, response, spider)
+
+    def on_item_scraped(self, item, response, spider):
+        self._reporter.on_item_scraped(item, response, spider)
+
+    def on_item_dropped(self, item, spider, exception):
+        self._reporter.on_item_dropped(item, spider, exception)
