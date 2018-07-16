@@ -1,8 +1,12 @@
 
 
 class BaseReporter(object):
-    def __init__(self, settings):
+    def __init__(self, settings, *args, **kwargs):
         self._settings = settings
+
+    def start(self, *args, **kwargs): pass
+
+    def stop(self, *args, **kwargs): pass
 
     def on_receive_requests(self, requests):
         pass
