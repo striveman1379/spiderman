@@ -32,7 +32,11 @@ class SpidermanManager(object):
     def requester_manager(self): return self._requester_manager
 
     def start(self, spider):
-        self._spider = spider
+        # init spider
+        self._spider = self._init_spider(spider)
+
+
+        # start manager
         self._backend_manager.start()
         self._requester_manager.start(spider)
         self._reporter_manager.start()
@@ -59,3 +63,11 @@ class SpidermanManager(object):
 
     def process_spider_error(self, failure, response, spider):
         return self._reporter_manager.on_spider_error(failure, response, spider)
+
+
+    def _init_spider(self, spider):
+        id = self._settings.get('SPIDER_ID')
+        if id is None:
+            id = 'default'
+        setattr(spider, 'id', id)
+        return spider
