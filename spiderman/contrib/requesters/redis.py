@@ -27,9 +27,21 @@ class RedisRequester(BaseRequester):
         return self._backend.stop(reason)
 
     def add_requests(self, requests):
+        p = self._backend.pipeline()
+        if p is None:
+            return
+
+        # deduplicate
         for r in requests:
-            if self._backend.execute_command("SADD", self._deduplicater_key, r.url) == 1:
-                self._backend.execute_command("LPUSH", self._container_key, self.encode_request(r))
+            p.execute_command("SADD", self._deduplicater_key, r.url)
+        results = p.execute()
+
+        request_list = []
+        # loop
+        for i, r in enumerate(requests):
+            if results[i] == 1:
+                p.execute_command("LPUSH", self._container_key, self.encode_request(r))
+        p.execute()
 
     def get_requests(self, max_requests=0, **kwargs):
         data = None
