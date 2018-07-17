@@ -35,7 +35,7 @@ if __name__ == '__main__':
 
     command = 'drop database if exists %s' % database
     connect_cursor.execute(command)
-    connect_cursor.execute("create database %s default character set utf8mb4 collate utf8mb4_unicode_ci" % database)
+    connect_cursor.execute("create database %s default character set utf8 collate utf8_general_ci" % database)
     connect_cursor.execute("use %s" % database)
 
 
