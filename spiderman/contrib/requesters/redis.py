@@ -33,7 +33,7 @@ class RedisRequester(BaseRequester):
 
         # deduplicate
         for r in requests:
-            p.execute_command("SADD", self._deduplicater_key, r.url)
+            p.execute_command("SADD", self._deduplicater_key, r.url + getattr(r, 'formdata', ''))
         results = p.execute()
 
         request_list = []
