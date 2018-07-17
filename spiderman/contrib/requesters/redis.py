@@ -1,6 +1,6 @@
 from .base import BaseRequester
 from spiderman.contrib.backends.redis.redis_backend import RedisBackend
-
+from pickle import dumps
 
 class RedisRequester(BaseRequester):
     VALID_BACKENDS = [RedisBackend]
@@ -33,7 +33,8 @@ class RedisRequester(BaseRequester):
 
         # deduplicate
         for r in requests:
-            p.execute_command("SADD", self._deduplicater_key, r.url + getattr(r, 'formdata', ''))
+            value = r.url + str(r.body)
+            p.execute_command("SADD", self._deduplicater_key, value)
         results = p.execute()
 
         request_list = []
