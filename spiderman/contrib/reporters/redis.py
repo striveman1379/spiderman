@@ -1,6 +1,6 @@
+import traceback
 from .backed import BackendReporter
 from spiderman.contrib.backends.redis.redis_backend import RedisBackend
-import msgpack
 
 
 class RedisReporter(BackendReporter):
@@ -33,7 +33,7 @@ class RedisReporter(BackendReporter):
         self._backend.execute_command("HMSET", key,
                                       'spider_id', spider.id,
                                       'status', 'on_download_exception',
-                                      'exception', repr(exception)
+                                      'exception', str(traceback.format_exc())
                                       )
 
     def on_spider_exception(self, response, exception, spider):
@@ -41,7 +41,7 @@ class RedisReporter(BackendReporter):
         self._backend.execute_command("HMSET", key,
                                       'spider_id', spider.id,
                                       'status', 'on_spider_exception',
-                                      'exception', repr(exception)
+                                      'exception', str(traceback.format_exc())
                                       )
 
     def on_spider_error(self, failure, response, spider):
@@ -49,7 +49,7 @@ class RedisReporter(BackendReporter):
         self._backend.execute_command("HMSET", key,
                                       'spider_id', spider.id,
                                       'status', 'on_spider_error',
-                                      'exception', repr(failure)
+                                      'exception', str(failure)
                                       )
 
     def on_item_scraped(self, item, response, spider):
