@@ -24,7 +24,7 @@ class MySqlBackend(BaseBackend):
             password=self.password,
             host=self.host,
             port=self.port,
-            charset='utf8'
+            charset='utf8mb4'
         )
         self.connect_cursor = self.connection.cursor()
         self.connect_cursor.execute("use %s" % self.database)
