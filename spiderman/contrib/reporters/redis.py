@@ -25,7 +25,7 @@ class RedisReporter(BackendReporter):
             self._backend.execute_command("HMSET", key,
                                           'status', 'on_receive_requests',
                                           'exception', 'None'
-                                          'spider_id', self._spider.id
+                                          'spider_id', str(self._spider.id)
                                           )
 
     def on_download_exception(self, request, exception, spider):
