@@ -24,7 +24,7 @@ class RedisReporter(BackendReporter):
             key = self._reporter_prefix + r.url
             self._backend.execute_command("HMSET", key,
                                           'status', 'on_receive_requests',
-                                          'exception', 'None'
+                                          'exception', 'None',
                                           'spider_id', str(self._spider.id)
                                           )
 
