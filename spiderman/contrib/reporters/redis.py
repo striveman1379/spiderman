@@ -23,7 +23,7 @@ class RedisReporter(BackendReporter):
         for r in requests:
             key = self._reporter_prefix + r.url
             self._backend.execute_command("HMSET", key,
-                                          'status', 'on_receive',
+                                          'status', 'on_receive_requests',
                                           'exception', 'None'
                                           )
 
@@ -31,7 +31,7 @@ class RedisReporter(BackendReporter):
         key = self._reporter_prefix + request.url
         self._backend.execute_command("HMSET", key,
                                       'spider_id', spider.id,
-                                      'status', 'on_download',
+                                      'status', 'on_download_exception',
                                       'exception', msgpack.packb(exception)
                                       )
 
@@ -39,7 +39,7 @@ class RedisReporter(BackendReporter):
         key = self._reporter_prefix + response.url
         self._backend.execute_command("HMSET", key,
                                       'spider_id', spider.id,
-                                      'status', 'on_spider',
+                                      'status', 'on_spider_exception',
                                       'exception', msgpack.packb(exception)
                                       )
 
@@ -47,7 +47,7 @@ class RedisReporter(BackendReporter):
         key = self._reporter_prefix + response.url
         self._backend.execute_command("HMSET", key,
                                       'spider_id', spider.id,
-                                      'status', 'on_spider',
+                                      'status', 'on_spider_error',
                                       'exception', msgpack.packb(failure)
                                       )
 
