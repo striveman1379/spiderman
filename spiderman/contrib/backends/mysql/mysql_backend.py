@@ -73,29 +73,6 @@ class MySqlBackend(BaseBackend):
     def query(self):
         pass
 
-    def is_exist(self, tablename, item):
-        cmd_format = "select count(*) from %s "
-        cmd_title = []
-        cmd_value = []
-
-        for (k, v) in item.items():
-            cmd_title.append(str(k))
-            if isinstance(v, str):
-                cmd_value.append("'{0}'".format(pymysql.escape_string(v)))
-            else:
-                cmd_value.append(pymysql.escape_string(v))
-        cmd_condition = ''
-        for index in range(len(cmd_title)):
-            if index == 0:
-                cmd_condition += ' where '
-            cmd_condition += cmd_title[index] + ' = ' + cmd_value[index]
-            if index < len(cmd_title) - 1:
-                cmd_condition += ' and '
-
-        cmd_insert = cmd_format % (tablename) + cmd_condition
-        result = self.execute_command_with_result(cmd_insert)
-        return result[0][0] > 0
-
     def execute_command(self, cmd):
         if not self.is_valid():
             return
