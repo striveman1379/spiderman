@@ -30,6 +30,7 @@ class RedisReporter(BackendReporter):
 
     def on_download_exception(self, request, exception, spider):
         key = self._reporter_prefix + request.url
+        print('=='*50)
         print(key)
         print(spider.id)
         print(str(traceback.format_exc()))
