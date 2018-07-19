@@ -33,7 +33,7 @@ class RedisReporter(BackendReporter):
         self._backend.execute_command("HMSET", key,
                                       'spider_id', spider.id,
                                       'status', 'on_download_exception',
-                                      'exception', exception
+                                      'exception', repr(exception)
                                       )
 
     def on_spider_exception(self, response, exception, spider):
@@ -41,7 +41,7 @@ class RedisReporter(BackendReporter):
         self._backend.execute_command("HMSET", key,
                                       'spider_id', spider.id,
                                       'status', 'on_spider_exception',
-                                      'exception', exception
+                                      'exception', repr(exception)
                                       )
 
     def on_spider_error(self, failure, response, spider):
@@ -49,7 +49,7 @@ class RedisReporter(BackendReporter):
         self._backend.execute_command("HMSET", key,
                                       'spider_id', spider.id,
                                       'status', 'on_spider_error',
-                                      'exception', failure
+                                      'exception', repr(failure)
                                       )
 
     def on_item_scraped(self, item, response, spider):
